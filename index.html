@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!-- iOS & Mobile Viewport Optimization: prevents pinch-zoom, bounce scroll, and memory crashes -->
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, shrink-to-fit=yes, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <title>Gorilla Tag Web | Retina High-Res & Actual Icons UI</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <style>
+      /* --- 1. PREVENT iOS SAFARI AUTO-ZOOM, BOUNCE SCROLL & TEXT SELECTION --- */
+      html, body {
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: #000000;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        touch-action: none;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+
+      #unity-container {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #0d1117;
+      }
+
+      /* NO FILTERS / NO BLURS: pure, unaltered WebGL rendering at sharp Retina resolution */
+      #unity-canvas {
+        width: 100% !important;
+        height: 100% !important;
+        display: block;
+        touch-action: none;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+        filter: none !important;
+        backdrop-filter: none !important;
+      }
+
+      /* --- 2. TOUCH CAMERA & HAND DRAG ZONE --- */
+      /* Captures touches on the screen outside UI buttons to look UP/DOWN/LEFT/RIGHT and drag gorilla hands */
+      #camera-touch-zone {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 50;
+        touch-action: none;
+        display: none; /* Shown automatically on mobile devices */
+      }
+
+      /* --- 3. NEW MOBILE UI (AUTO-DETECTED / EXACT IMG_0972.jpeg LAYOUT / ACTUAL ICONS WITH NO BUTTON BACKGROUNDS) --- */
+      #mobile-ui-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+        pointer-events: none;
+        display: none; /* Auto-shown on iOS/Android/touch devices */
+      }
+
+      /* TOP-LEFT: Diamond Button Cluster (1, 2, 3, 4) - NO BACKGROUND, ACTUAL ICONS */
+      .diamond-cluster-box {
+        position: absolute;
+        top: 18px;
+        left: 18px;
+        width: 120px;
+        height: 120px;
+        pointer-events: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+      }
+
+      .diamond-pad {
+        position: relative;
+        width: 100px;
+        height: 100px;
+      }
+
+      .btn-diamond {
+        position: absolute;
+        width: 42px;
+        height: 42px;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        color: #fff;
+        font-weight: 900;
+        font-size: 18px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        user-select: none;
+        touch-action: none;
+        transition: transform 0.1s;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.9));
+      }
+
+      .btn-diamond svg {
+        width: 32px;
+        height: 32px;
+        fill: #ffffff;
+        transition: fill 0.1s, transform 0.1s;
+      }
+
+      .btn-diamond:active, .btn-diamond.active {
+        transform: scale(0.85);
+      }
+      .btn-diamond:active svg, .btn-diamond.active svg {
+        fill: #f1c40f;
+      }
+
+      /* Diamond positions: 1 (Top), 2 (Right), 3 (Bottom), 4 (Left) */
+      .btn-diamond-1 { top: 0px; left: 29px; }
+      .btn-diamond-2 { top: 29px; right: 0px; }
+      .btn-diamond-3 { bottom: 0px; left: 29px; }
+      .btn-diamond-4 { top: 29px; left: 0px; }
+
+      /* BOTTOM-LEFT: Circular WASD Joystick (ONLY element with a circular background ring!) */
+      .joystick-container {
+        position: absolute;
+        bottom: 25px;
+        left: 25px;
+        width: 160px;
+        height: 160px;
+        pointer-events: auto;
+        touch-action: none;
+      }
+
+      .joystick-ring {
+        position: relative;
+        width: 160px;
+        height: 160px;
+        border: 2.5px solid rgba(255, 255, 255, 0.85);
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.45);
+        box-shadow: 0 4px 18px rgba(0,0,0,0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: none !important;
+      }
+
+      .joystick-label {
+        position: absolute;
+        color: #ffffff;
+        font-weight: 900;
+        font-size: 20px;
+        text-shadow: 0 2px 5px rgba(0,0,0,0.95);
+        pointer-events: none;
+        user-select: none;
+      }
+
+      .label-w { top: 10px; left: 50%; transform: translateX(-50%); }
+      .label-a { left: 14px; top: 50%; transform: translateY(-50%); }
+      .label-s { bottom: 10px; left: 50%; transform: translateX(-50%); }
+      .label-d { right: 14px; top: 50%; transform: translateY(-50%); }
+
+      .joystick-knob {
+        position: absolute;
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.95);
+        border: 2px solid #ffffff;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        transition: transform 0.05s linear;
+        pointer-events: none;
+      }
+
+      /* BOTTOM-RIGHT: (TAB), (ESC), and Hand Slap Helper Buttons - NO BACKGROUND, ACTUAL ICONS */
+      .right-controls-cluster {
+        position: absolute;
+        bottom: 22px;
+        right: 22px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 14px;
+        pointer-events: auto;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+      }
+
+      .hand-action-row {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+      }
+
+      .btn-icon-action {
+        width: 58px;
+        height: 58px;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        color: #fff;
+        font-weight: 800;
+        font-size: 11px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2px;
+        user-select: none;
+        touch-action: none;
+        filter: drop-shadow(0 2px 6px rgba(0,0,0,0.9));
+        transition: transform 0.1s;
+      }
+
+      .btn-icon-action svg {
+        width: 36px;
+        height: 36px;
+        fill: #ffffff;
+        transition: fill 0.1s, transform 0.1s;
+      }
+
+      .btn-icon-action:active, .btn-icon-action.active {
+        transform: scale(0.85);
+      }
+      .btn-icon-action:active svg, .btn-icon-action.active svg {
+        fill: #f1c40f;
+      }
+
+      .system-icons-row {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .btn-system-icon {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        color: #fff;
+        font-weight: 900;
+        font-size: 13px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        user-select: none;
+        touch-action: none;
+        filter: drop-shadow(0 2px 6px rgba(0,0,0,0.95));
+        transition: transform 0.1s;
+      }
+
+      .btn-system-icon svg {
+        width: 38px;
+        height: 38px;
+        fill: #ffffff;
+        transition: fill 0.1s;
+      }
+
+      .btn-system-icon:active {
+        transform: scale(0.85);
+      }
+      .btn-system-icon:active svg {
+        fill: #f1c40f;
+      }
+
+      /* Custom Warning Banner */
+      #unity-warning {
+        position: absolute;
+        top: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 200;
+        width: 85%;
+        max-width: 600px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- UNITY CONTAINER -->
+    <div id="unity-container" class="unity-desktop">
+      <canvas id="unity-canvas" tabindex="-1"></canvas>
+      <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full"></div>
+        </div>
+      </div>
+      <div id="unity-warning"> </div>
+      <div id="unity-footer" style="display: none;">
+        <div id="unity-webgl-logo"></div>
+        <div id="unity-fullscreen-button"></div>
+        <div id="unity-build-title">gorilla tag web</div>
+      </div>
+    </div>
+
+    <!-- TOUCH CAMERA & HAND DRAG ZONE (Background touch layer for looking UP/DOWN/LEFT/RIGHT & dragging hands) -->
+    <div id="camera-touch-zone"></div>
+
+    <!-- NEW MOBILE UI OVERLAY (AUTO-DETECTED / EXACT IMAGE IMG_0972.jpeg / NO BUTTON BACKGROUNDS / ACTUAL ICONS) -->
+    <div id="mobile-ui-overlay">
+      <!-- TOP-LEFT: Diamond Cluster (1, 2, 3, 4) - NO BACKGROUND, ACTUAL ICONS -->
+      <div class="diamond-cluster-box">
+        <div class="diamond-pad">
+          <!-- Button 1 Icon -->
+          <div class="btn-diamond btn-diamond-1" data-key="Digit1" data-char="1" title="1">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3zm1 14h-2v-6H9V8h2V6h2v10z"/>
+            </svg>
+            <span>1</span>
+          </div>
+          <!-- Button 2 Icon -->
+          <div class="btn-diamond btn-diamond-2" data-key="Digit2" data-char="2" title="2">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+            </svg>
+            <span>2</span>
+          </div>
+          <!-- Button 3 Icon -->
+          <div class="btn-diamond btn-diamond-3" data-key="Digit3" data-char="3" title="3">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+            </svg>
+            <span>3</span>
+          </div>
+          <!-- Button 4 Icon -->
+          <div class="btn-diamond btn-diamond-4" data-key="Digit4" data-char="4" title="4">
+            <svg viewBox="0 0 24 24">
+              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+            </svg>
+            <span>4</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTTOM-LEFT: Circular WASD Joystick (ONLY element with a circular background ring) -->
+      <div class="joystick-container" id="wasd-joystick">
+        <div class="joystick-ring" id="joystick-ring">
+          <span class="joystick-label label-w">W</span>
+          <span class="joystick-label label-a">A</span>
+          <span class="joystick-label label-s">S</span>
+          <span class="joystick-label label-d">D</span>
+          <div class="joystick-knob" id="joystick-knob"></div>
+        </div>
+      </div>
+
+      <!-- BOTTOM-RIGHT: System Icons ((TAB) / Trophy and (ESC) / Menu) + Hand Action Helper Icons - NO BACKGROUND -->
+      <div class="right-controls-cluster">
+        <!-- Hand Slap & Jump Icons row -->
+        <div class="hand-action-row">
+          <!-- Left Hand Icon -->
+          <div class="btn-icon-action" data-key="KeyQ" title="Left Hand Slap">
+            <svg viewBox="0 0 24 24">
+              <path d="M11.5 2C10.67 2 10 2.67 10 3.5v7H8.5V4.5C8.5 3.67 7.83 3 7 3S5.5 3.67 5.5 4.5v6H4V6.5C4 5.67 3.33 5 2.5 5S1 5.67 1 6.5v7.25c0 4.55 3.7 8.25 8.25 8.25h1.5c4.55 0 8.25-3.7 8.25-8.25V5.5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5V10h-1.5V3.5C14.5 2.67 13.83 2 13 2s-1.5.67-1.5 1.5z"/>
+            </svg>
+            <span>L-HAND</span>
+          </div>
+          <!-- Jump / Leap Icon -->
+          <div class="btn-icon-action" data-key="Space" title="Gorilla Leap">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2L4 10h5v12h6V10h5L12 2z"/>
+            </svg>
+            <span>JUMP</span>
+          </div>
+          <!-- Right Hand Icon -->
+          <div class="btn-icon-action" data-key="KeyE" title="Right Hand Slap">
+            <svg viewBox="0 0 24 24">
+              <path d="M12.5 2c.83 0 1.5.67 1.5 1.5v7h1.5V4.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v6H20V6.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v7.25c0 4.55-3.7 8.25-8.25 8.25h-1.5c-4.55 0-8.25-3.7-8.25-8.25V5.5C5 4.67 5.67 4 6.5 4S8 4.67 8 5.5V10h1.5V3.5C9.5 2.67 10.17 2 11 2s1.5.67 1.5 1.5z"/>
+            </svg>
+            <span>R-HAND</span>
+          </div>
+        </div>
+
+        <!-- (TAB) / Scoreboard Trophy & (ESC) / Menu Icon row -->
+        <div class="system-icons-row">
+          <!-- TAB / Scoreboard Icon -->
+          <div class="btn-system-icon" data-key="Tab" title="Scoreboard">
+            <svg viewBox="0 0 24 24">
+              <path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/>
+            </svg>
+            <span>(TAB)</span>
+          </div>
+          <!-- ESC / Menu Icon -->
+          <div class="btn-system-icon" data-key="Escape" title="Menu">
+            <svg viewBox="0 0 24 24">
+              <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+            </svg>
+            <span>(ESC)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // --- 1. PREVENT iOS SAFARI AUTO-ZOOM, GESTURE ZOOM & BOUNCE SCROLLING ---
+      var lastTouchEnd = 0;
+      document.addEventListener('touchend', function(event) {
+        var now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+          event.preventDefault();
+        }
+        lastTouchEnd = now;
+      }, { passive: false });
+
+      document.addEventListener('gesturestart', function(e) { e.preventDefault(); }, { passive: false });
+      document.addEventListener('gesturechange', function(e) { e.preventDefault(); }, { passive: false });
+      document.addEventListener('gestureend', function(e) { e.preventDefault(); }, { passive: false });
+
+      document.addEventListener('touchmove', function(e) {
+        // Prevent scroll bounce on all touch moves
+        if (e.target && !e.target.classList.contains('allow-scroll')) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+
+      var container = document.querySelector("#unity-container");
+      var canvas = document.querySelector("#unity-canvas");
+      var loadingBar = document.querySelector("#unity-loading-bar");
+      var progressBarFull = document.querySelector("#unity-progress-bar-full");
+      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
+      var warningBanner = document.querySelector("#unity-warning");
+
+      function unityShowBanner(msg, type) {
+        function updateBannerVisibility() {
+          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+        }
+        var div = document.createElement('div');
+        div.innerHTML = msg;
+        warningBanner.appendChild(div);
+        if (type == 'error') div.style = 'background: red; color: white; padding: 10px; border-radius: 8px; font-weight: bold;';
+        else {
+          if (type == 'warning') div.style = 'background: #f1c40f; color: #000; padding: 10px; border-radius: 8px; font-weight: bold;';
+          setTimeout(function() {
+            warningBanner.removeChild(div);
+            updateBannerVisibility();
+          }, 5000);
+        }
+        updateBannerVisibility();
+      }
+
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/gtagweb.loader.js";
+      var config = {
+        dataUrl: buildUrl + "/gtagweb.data.unityweb",
+        frameworkUrl: buildUrl + "/gtagweb.framework.js.unityweb",
+        codeUrl: buildUrl + "/gtagweb.wasm.unityweb",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "boolonx",
+        productName: "gorilla tag web",
+        productVersion: "1.0",
+        showBanner: unityShowBanner,
+      };
+
+      // --- 2. CRITICAL iOS & MOBILE RETINA RESOLUTION OPTIMIZATION ---
+      // Fixes resolution ("And fix resuluyion too"): up to 2.0x Retina quality for crystal clear graphics without blur!
+      var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+      if (isMobile) {
+        // Set crisp 2.0x Retina resolution: crystal clear on iPhone 11 Pro Max while staying safely under iOS Safari memory limits
+        config.devicePixelRatio = Math.min(2.0, window.devicePixelRatio || 1);
+        config.matchWebGLToCanvasSize = true;
+
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, shrink-to-fit=yes, viewport-fit=cover';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+        container.className = "unity-mobile";
+        canvas.className = "unity-mobile";
+
+        // AUTO-DETECT MOBILE: Show exact uploaded image UI & Camera touch zone
+        var mobileUI = document.getElementById('mobile-ui-overlay');
+        var cameraZone = document.getElementById('camera-touch-zone');
+        if (mobileUI && cameraZone) {
+          mobileUI.style.display = 'block';
+          cameraZone.style.display = 'block';
+        }
+      } else {
+        // Desktop Mode: sharp high-resolution rendering
+        config.devicePixelRatio = Math.min(2.0, window.devicePixelRatio || 1);
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
+      }
+
+      // --- WEBGL CONTEXT LOSS RECOVERY ---
+      canvas.addEventListener("webglcontextlost", function(e) {
+        e.preventDefault();
+        unityShowBanner("WebGL context reclaimed by iOS. Automatically reloading game in 1.5s...", "warning");
+        setTimeout(function() {
+          window.location.reload();
+        }, 1500);
+      }, false);
+
+      // --- IOS AUDIO CONTEXT AUTO-UNLOCKER ---
+      function resumeiOSAudio() {
+        var AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (AudioCtx) {
+          // Any touch unlocks Safari audio
+        }
+      }
+      window.addEventListener('touchstart', resumeiOSAudio, { passive: true, once: true });
+      window.addEventListener('click', resumeiOSAudio, { passive: true, once: true });
+
+      // =========================================================================
+      // --- MOBILE TOUCH CONTROLLER & RIG ANIMATION / CAMERA LOOK ENGINE ---
+      // =========================================================================
+
+      // 1. HELPER: Dispatch Keyboard Events to Unity
+      function sendKeyEvent(type, code, keyChar) {
+        var event = new KeyboardEvent(type, {
+          key: keyChar || (code === 'Space' ? ' ' : code),
+          code: code,
+          bubbles: true,
+          cancelable: true
+        });
+        window.dispatchEvent(event);
+        canvas.dispatchEvent(event);
+      }
+
+      // 2. DIAMOND CLUSTER (1, 2, 3, 4) & SYSTEM ICONS ((TAB), (ESC), HANDS) - NO BACKGROUND, ACTUAL ICONS
+      var touchButtons = document.querySelectorAll('.btn-diamond, .btn-system-icon, .btn-icon-action');
+      touchButtons.forEach(function(btn) {
+        var keyCode = btn.getAttribute('data-key');
+        var charCode = btn.getAttribute('data-char') || keyCode;
+        btn.addEventListener('touchstart', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          btn.classList.add('active');
+          sendKeyEvent('keydown', keyCode, charCode);
+          // For hand slap icons, also trigger mousedown for rig hand drag
+          if (keyCode === 'KeyQ' || keyCode === 'KeyE') {
+            sendMouseEvent('mousedown', e.touches[0].clientX, e.touches[0].clientY, keyCode === 'KeyQ' ? 0 : 2);
+          }
+        }, { passive: false });
+
+        btn.addEventListener('touchend', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          btn.classList.remove('active');
+          sendKeyEvent('keyup', keyCode, charCode);
+          if (keyCode === 'KeyQ' || keyCode === 'KeyE') {
+            sendMouseEvent('mouseup', 0, 0, keyCode === 'KeyQ' ? 0 : 2);
+          }
+        }, { passive: false });
+      });
+
+      // 3. CIRCULAR WASD JOYSTICK ENGINE (Exactly like IMG_0972.jpeg)
+      var joystickContainer = document.getElementById('wasd-joystick');
+      var joystickRing = document.getElementById('joystick-ring');
+      var joystickKnob = document.getElementById('joystick-knob');
+
+      var activeKeys = { W: false, A: false, S: false, D: false };
+      var joystickTouchId = null;
+      var maxRadius = 55; // max px knob can travel from ring center
+
+      if (joystickContainer && joystickRing && joystickKnob) {
+        joystickContainer.addEventListener('touchstart', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (joystickTouchId === null && e.changedTouches.length > 0) {
+            joystickTouchId = e.changedTouches[0].identifier;
+            updateJoystickPosition(e.changedTouches[0]);
+          }
+        }, { passive: false });
+
+        joystickContainer.addEventListener('touchmove', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          for (var i = 0; i < e.changedTouches.length; i++) {
+            if (e.changedTouches[i].identifier === joystickTouchId) {
+              updateJoystickPosition(e.changedTouches[i]);
+              break;
+            }
+          }
+        }, { passive: false });
+
+        function endJoystick(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          for (var i = 0; i < e.changedTouches.length; i++) {
+            if (e.changedTouches[i].identifier === joystickTouchId) {
+              joystickTouchId = null;
+              joystickKnob.style.transform = 'translate(0px, 0px)';
+              resetAllJoystickKeys();
+              break;
+            }
+          }
+        }
+
+        joystickContainer.addEventListener('touchend', endJoystick, { passive: false });
+        joystickContainer.addEventListener('touchcancel', endJoystick, { passive: false });
+      }
+
+      function updateJoystickPosition(touch) {
+        var rect = joystickRing.getBoundingClientRect();
+        var centerX = rect.left + rect.width / 2;
+        var centerY = rect.top + rect.height / 2;
+
+        var dx = touch.clientX - centerX;
+        var dy = touch.clientY - centerY;
+        var distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance > maxRadius) {
+          dx = (dx / distance) * maxRadius;
+          dy = (dy / distance) * maxRadius;
+        }
+
+        joystickKnob.style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+
+        // Deadzone threshold = 14px
+        var threshold = 14;
+        var wantW = dy < -threshold;
+        var wantS = dy > threshold;
+        var wantA = dx < -threshold;
+        var wantD = dx > threshold;
+
+        updateKeyState('W', 'KeyW', wantW);
+        updateKeyState('S', 'KeyS', wantS);
+        updateKeyState('A', 'KeyA', wantA);
+        updateKeyState('D', 'KeyD', wantD);
+      }
+
+      function updateKeyState(keyName, code, wantPressed) {
+        if (activeKeys[keyName] !== wantPressed) {
+          activeKeys[keyName] = wantPressed;
+          sendKeyEvent(wantPressed ? 'keydown' : 'keyup', code, keyName);
+        }
+      }
+
+      function resetAllJoystickKeys() {
+        updateKeyState('W', 'KeyW', false);
+        updateKeyState('S', 'KeyS', false);
+        updateKeyState('A', 'KeyA', false);
+        updateKeyState('D', 'KeyD', false);
+      }
+
+      // 4. TOUCH CAMERA LOOK (UP/DOWN/LEFT/RIGHT) & RIG HAND DRAGGING
+      // Allows looking UP and DOWN with camera and dragging hands on the screen!
+      var cameraZone = document.getElementById('camera-touch-zone');
+      var cameraTouchId = null;
+      var lastTouchX = 0;
+      var lastTouchY = 0;
+
+      function sendMouseEvent(type, clientX, clientY, button, movementX, movementY) {
+        var evt = new MouseEvent(type, {
+          bubbles: true,
+          cancelable: true,
+          clientX: clientX,
+          clientY: clientY,
+          screenX: clientX,
+          screenY: clientY,
+          button: button || 0,
+          buttons: type === 'mouseup' ? 0 : 1
+        });
+        if (typeof movementX === 'number') {
+          Object.defineProperty(evt, 'movementX', { value: movementX });
+          Object.defineProperty(evt, 'movementY', { value: movementY });
+        }
+        canvas.dispatchEvent(evt);
+        window.dispatchEvent(evt);
+      }
+
+      if (cameraZone) {
+        cameraZone.addEventListener('touchstart', function(e) {
+          e.preventDefault();
+          if (cameraTouchId === null && e.changedTouches.length > 0) {
+            var t = e.changedTouches[0];
+            cameraTouchId = t.identifier;
+            lastTouchX = t.clientX;
+            lastTouchY = t.clientY;
+            // Send mousedown to allow grabbing & dragging gorilla hands/rig
+            sendMouseEvent('mousedown', t.clientX, t.clientY, 0);
+          }
+        }, { passive: false });
+
+        cameraZone.addEventListener('touchmove', function(e) {
+          e.preventDefault();
+          for (var i = 0; i < e.changedTouches.length; i++) {
+            var t = e.changedTouches[i];
+            if (t.identifier === cameraTouchId) {
+              var dx = t.clientX - lastTouchX;
+              var dy = t.clientY - lastTouchY; // Allows looking UP and DOWN with camera!
+              lastTouchX = t.clientX;
+              lastTouchY = t.clientY;
+
+              // Smooth sensitivity for 360 camera rotation
+              sendMouseEvent('mousemove', t.clientX, t.clientY, 0, dx * 1.6, dy * 1.6);
+              break;
+            }
+          }
+        }, { passive: false });
+
+        function endCameraTouch(e) {
+          e.preventDefault();
+          for (var i = 0; i < e.changedTouches.length; i++) {
+            if (e.changedTouches[i].identifier === cameraTouchId) {
+              var t = e.changedTouches[i];
+              cameraTouchId = null;
+              sendMouseEvent('mouseup', t.clientX, t.clientY, 0);
+              break;
+            }
+          }
+        }
+
+        cameraZone.addEventListener('touchend', endCameraTouch, { passive: false });
+        cameraZone.addEventListener('touchcancel', endCameraTouch, { passive: false });
+      }
+
+      // --- AUTO LOAD GAME IMMEDIATELY (NO MENU REQUIRED) ---
+      loadingBar.style.display = "block";
+
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          progressBarFull.style.width = 100 * progress + "%";
+        }).then((unityInstance) => {
+          loadingBar.style.display = "none";
+          window.unityGameInstance = unityInstance;
+
+          if (fullscreenButton) {
+            fullscreenButton.onclick = () => {
+              unityInstance.SetFullscreen(1);
+            };
+          }
+        }).catch((message) => {
+          console.error("Unity Load Error:", message);
+          if (typeof message === "string" && message.includes("Content-Encoding")) {
+            unityShowBanner("GitHub Pages Note: Unity JS automatic inflator is decompressing content.", "warning");
+          } else {
+            unityShowBanner("Error loading Gorilla Tag Web: " + message, "error");
+          }
+        });
+      };
+
+      document.body.appendChild(script);
+    </script>
+  </body>
+</html>

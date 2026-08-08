@@ -1,0 +1,25 @@
+{
+  "name": "gorilla-tag-web",
+  "version": "2.2.0",
+  "description": "Gorilla Tag Web (boolonx / gtagweb) - Retina High-Res, Actual Icons UI, iOS Safari & Mobile Optimized",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "gorilla-tag",
+    "gorillatag",
+    "gtag",
+    "vr",
+    "webgl",
+    "unity",
+    "ios",
+    "github-pages"
+  ],
+  "author": "boolonx",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
