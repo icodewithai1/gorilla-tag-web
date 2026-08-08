@@ -13,10 +13,9 @@ An optimized, **auto-loading** WebGL port of Another Axiom's **Gorilla Tag** (ba
 
 ### 2. 🎮 Exact Uploaded Image Mobile UI with Actual Icons & No Button Backgrounds
 When you open the game on any touch/mobile device, the exact mobile UI overlay (`#mobile-ui-overlay`) appears automatically:
-- **No Button Backgrounds:** All buttons (`1-4`, `L-HAND`, `R-HAND`, `JUMP`, `TAB`, `ESC`) have **no box backgrounds or borders** (`background: transparent; border: none;`), except the circular WASD joystick ring as requested.
+- **No Button Backgrounds & Transparent Joystick:** All buttons (`L-HAND`, `R-HAND`, `JUMP`, `TAB`, `ESC`) have **no box backgrounds or borders** (`background: transparent; border: none;`). The circular WASD joystick ring has **zero background opacity** (`background: transparent`).
 - **Actual SVG Icons:**
-  - **Top-Left Diamond Cluster (1, 2, 3, 4):** Four buttons arranged in a diamond layout using crisp SVG graphics for numbers `1`, `2`, `3`, `4`.
-  - **Bottom-Left Circular WASD Joystick:** A circular ring with `W`, `A`, `S`, `D` labels and a smooth draggable center thumbstick knob. Dragging the knob smoothly triggers `W`, `A`, `S`, `D` keys for movement.
+  - **Bottom-Left Circular WASD Joystick:** A transparent circular ring with `W`, `A`, `S`, `D` labels and a smooth draggable center thumbstick knob. Dragging the knob smoothly triggers `W`, `A`, `S`, `D` keys for movement.
   - **Bottom-Right System & Hand Icons:** Clean SVG icons for **`(TAB)` / Trophy**, **`(ESC)` / Menu**, **`✋ L-HAND`**, **`⬆️ JUMP`**, and **`✋ R-HAND`**.
 
 ### 3. 🎥 Look Up/Down & Drag Gorilla Hands on Mobile Touch
@@ -66,8 +65,7 @@ Open your browser to `http://localhost:3000/` to test the game and mobile UI.
 
 | Touch Control | Function |
 | :--- | :--- |
-| **Circular WASD Joystick (Bottom-Left)** | Steer & Move Gorilla (`W`, `A`, `S`, `D`) |
-| **Diamond Cluster `1`, `2`, `3`, `4` (Top-Left)** | Rig Animations / Mode Switching (`1`, `2`, `3`, `4`) |
+| **Transparent WASD Joystick (Bottom-Left)** | Steer & Move Gorilla (`W`, `A`, `S`, `D`) |
 | **Touch Camera Zone (Screen Drag)** | Look Up, Down, Left, Right + Drag Gorilla Hands |
 | **`(TAB)` / `(ESC)` Icons (Bottom-Right)** | Toggle Scoreboard (`TAB`) / Open Menu (`ESC`) |
 | **`✋ L-HAND`, `⬆️ JUMP`, `✋ R-HAND` Icons** | Hand Slaps (`Q`, `E`) & Leap (`Space`) |

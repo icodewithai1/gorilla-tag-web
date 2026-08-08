@@ -83,68 +83,7 @@
         display: none; /* Auto-shown on iOS/Android/touch devices */
       }
 
-      /* TOP-LEFT: Diamond Button Cluster (1, 2, 3, 4) - NO BACKGROUND, ACTUAL ICONS */
-      .diamond-cluster-box {
-        position: absolute;
-        top: 18px;
-        left: 18px;
-        width: 120px;
-        height: 120px;
-        pointer-events: auto;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        backdrop-filter: none !important;
-      }
 
-      .diamond-pad {
-        position: relative;
-        width: 100px;
-        height: 100px;
-      }
-
-      .btn-diamond {
-        position: absolute;
-        width: 42px;
-        height: 42px;
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        color: #fff;
-        font-weight: 900;
-        font-size: 18px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        user-select: none;
-        touch-action: none;
-        transition: transform 0.1s;
-        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.9));
-      }
-
-      .btn-diamond svg {
-        width: 32px;
-        height: 32px;
-        fill: #ffffff;
-        transition: fill 0.1s, transform 0.1s;
-      }
-
-      .btn-diamond:active, .btn-diamond.active {
-        transform: scale(0.85);
-      }
-      .btn-diamond:active svg, .btn-diamond.active svg {
-        fill: #f1c40f;
-      }
-
-      /* Diamond positions: 1 (Top), 2 (Right), 3 (Bottom), 4 (Left) */
-      .btn-diamond-1 { top: 0px; left: 29px; }
-      .btn-diamond-2 { top: 29px; right: 0px; }
-      .btn-diamond-3 { bottom: 0px; left: 29px; }
-      .btn-diamond-4 { top: 29px; left: 0px; }
 
       /* BOTTOM-LEFT: Circular WASD Joystick (ONLY element with a circular background ring!) */
       .joystick-container {
@@ -163,8 +102,8 @@
         height: 160px;
         border: 2.5px solid rgba(255, 255, 255, 0.85);
         border-radius: 50%;
-        background: rgba(0, 0, 0, 0.45);
-        box-shadow: 0 4px 18px rgba(0,0,0,0.8);
+        background: transparent !important;
+        box-shadow: none !important;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -326,39 +265,7 @@
 
     <!-- NEW MOBILE UI OVERLAY (AUTO-DETECTED / EXACT IMAGE IMG_0972.jpeg / NO BUTTON BACKGROUNDS / ACTUAL ICONS) -->
     <div id="mobile-ui-overlay">
-      <!-- TOP-LEFT: Diamond Cluster (1, 2, 3, 4) - NO BACKGROUND, ACTUAL ICONS -->
-      <div class="diamond-cluster-box">
-        <div class="diamond-pad">
-          <!-- Button 1 Icon -->
-          <div class="btn-diamond btn-diamond-1" data-key="Digit1" data-char="1" title="1">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3zm1 14h-2v-6H9V8h2V6h2v10z"/>
-            </svg>
-            <span>1</span>
-          </div>
-          <!-- Button 2 Icon -->
-          <div class="btn-diamond btn-diamond-2" data-key="Digit2" data-char="2" title="2">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-            </svg>
-            <span>2</span>
-          </div>
-          <!-- Button 3 Icon -->
-          <div class="btn-diamond btn-diamond-3" data-key="Digit3" data-char="3" title="3">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-            </svg>
-            <span>3</span>
-          </div>
-          <!-- Button 4 Icon -->
-          <div class="btn-diamond btn-diamond-4" data-key="Digit4" data-char="4" title="4">
-            <svg viewBox="0 0 24 24">
-              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-            </svg>
-            <span>4</span>
-          </div>
-        </div>
-      </div>
+
 
       <!-- BOTTOM-LEFT: Circular WASD Joystick (ONLY element with a circular background ring) -->
       <div class="joystick-container" id="wasd-joystick">
@@ -542,8 +449,8 @@
         canvas.dispatchEvent(event);
       }
 
-      // 2. DIAMOND CLUSTER (1, 2, 3, 4) & SYSTEM ICONS ((TAB), (ESC), HANDS) - NO BACKGROUND, ACTUAL ICONS
-      var touchButtons = document.querySelectorAll('.btn-diamond, .btn-system-icon, .btn-icon-action');
+      // 2. SYSTEM ICONS ((TAB), (ESC), HANDS) - NO BACKGROUND, ACTUAL ICONS
+      var touchButtons = document.querySelectorAll('.btn-system-icon, .btn-icon-action');
       touchButtons.forEach(function(btn) {
         var keyCode = btn.getAttribute('data-key');
         var charCode = btn.getAttribute('data-char') || keyCode;
